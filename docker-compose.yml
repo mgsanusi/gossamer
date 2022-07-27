@@ -1,0 +1,27 @@
+version: '2'
+services:
+  web:
+    build: .
+    restart: always
+    ports: 
+      - "80:80"
+      - "443:443"
+    links:
+      - ephdb
+    volumes:
+      - ./app:/var/www/gossamer/app/
+      - ./tests:/var/www/gossamer/tests/
+      - ./tests/secrets:/var/run/secrets/:ro
+
+  ephdb:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: sso
+      MYSQL_PASSWORD: changeme
+      MYSQL_DATABASE: eph
+    volumes:
+      - ./config_files/dbconf:/etc/mysql/mysql.conf.d/:ro
+      - ./config_files/dbconf:/docker-entrypoint-initdb.d:ro
