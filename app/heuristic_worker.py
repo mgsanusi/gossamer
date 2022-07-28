@@ -15,6 +15,7 @@ from app.classes import EphemeralLoginData, PersistentLoginData
 # import sys
 # sys.modules["app.classes"] = classes
 from app.credtweak_models.ppsm import ppsm
+import os
 
 
 # Connect client for communicating with db
@@ -29,7 +30,8 @@ username_stash = {} # Store top N most common passwords
 threshold = 0 # The frequency of the least common element in the stash
 N = 50
 
-APP_DIR = Path("/var/www/gossamer/app/")
+APP_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+#APP_DIR = Path("/var/www/gossamer/app/")
 DATA_DIR = APP_DIR / "data"
 pass2path_shelve = shelve.open(str(APP_DIR / "credtweak_models/pass2path.shelve"))
 

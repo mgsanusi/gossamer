@@ -3,18 +3,18 @@ from gensim.models import FastText
 import numpy as np
 from word2keypress import Keyboard
 from numpy import dot
-from gensim.models.utils_any2vec import _save_word2vec_format, _load_word2vec_format, _compute_ngrams, _ft_hash
+from gensim.models.utils_any2vec import _save_word2vec_format, _load_word2vec_format, compute_ngrams as _compute_ngrams, ft_hash_broken as _ft_hash
 import math
 import sys
 from gensim import utils, matutils
 from zxcvbn import zxcvbn
   
-KB = Keyboard()
-model_file = sys.argv[1]
-model = gensim.models.Word2Vec.load(model_file)
-model.init_sims()
-
 def get_vector_ngram(word):
+    KB = Keyboard()
+    model_file = sys.argv[1]
+    model = gensim.models.Word2Vec.load(model_file)
+    model.init_sims()
+
     word_vec = np.zeros(model.wv.vectors_ngrams.shape[1], dtype=np.float32)
   
     ngrams = _compute_ngrams(word, model.wv.min_n, model.wv.max_n)
@@ -46,8 +46,4 @@ def ppsm(word1,word2):
     if similarity_score>0.5:
         ppsm_score = 0
     return ppsm_score
-input_word = sys.argv[2]
-tar_word = sys.argv[3]
-print(ppsm(input_word,tar_word))
-    
-    
+

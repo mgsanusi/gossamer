@@ -17,13 +17,10 @@ p4 = "password4444"
 heuristic_worker.breach_dict = {"brayden" : ["password123", "super_secure_pwd"], "eliza" : ["myspecialpassword"]}
 
 def test_parse_breach_data():
-    heuristic_worker.cornell_breach_fname = "/var/www/gossamer/tests/test_breach_data.txt"
-    breach_pairs, breach_dict = parse_breach_data()
-    assert(isinstance(breach_pairs, list))
+    heuristic_worker.breach_fname = str(os.path.dirname(os.path.realpath(__file__))) + "/test_breach_data.txt"
+    breach_dict = parse_breach_data()
     assert(isinstance(breach_dict, dict))
-    assert(len(breach_pairs) == 6)
     assert(len(breach_dict.keys()) == 3)
-    assert(breach_pairs[0][0] == "rrobert")
     assert(len(breach_dict["rrobert"]) == 3)
 
 def test_add_to_bloom_filter():

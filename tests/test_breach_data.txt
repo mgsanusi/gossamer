@@ -1,6 +1,6 @@
-data/r/r:rrobert@school.edu:77bentley
-data/r/r:rrobert@school.edu:rainbow
-data/r/r:rrobert@school.edu:letmein
-data/r/r:saanvi@school.edu:ihateschool
-data/r/g:greg@school.edu:randompass
-data/r/g:greg@school.edu:anotherrandom
+rrobert:77bentley
+rrobert:rainbow
+rrobert:letmein
+saanvi:ihateschool
+greg:randompass
+greg:anotherrandom

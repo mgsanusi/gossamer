@@ -3,13 +3,15 @@ import base64
 from botocore.exceptions import ClientError
 import ast
 import os, sys
+import pathlib
 from pathlib import Path
 import six.moves.configparser
 import hashlib
 
-build = os.environ.get('BUILD')
+build = os.environ.get('BUILD') or "test"
 
-SEC_LOC = Path('/var/run/secrets/')
+parent_dir = "/".join(str(pathlib.Path(__file__).parent.resolve()).split("/")[:-1])
+SEC_LOC = Path('/var/run/secrets/') if build in ["prod", "dev"] else Path("{}/tests/secrets".format(parent_dir))
 SEC_FILE = SEC_LOC / 'secrets.conf'
 
 config = six.moves.configparser.ConfigParser()
@@ -28,10 +30,7 @@ def read_secret_config(section, config_file=SEC_FILE):
 def get_secret(key):
     """Retrieve the secrets from some path"""
     config_d = read_secret_config('defaults')
-    if build == "test":
-        return "testsecret"
-    else:
-        return get_secret_key(key).encode() if key == "persistent_key" else get_secret_key(key)
+    return get_secret_key(key) if key == "persistent_key" else get_secret_key(key)
 
 def get_secret_key(key):
     c = read_secret_config('defaults')
@@ -44,6 +43,11 @@ def get_secret_key(key):
 
 # OPTIONAL AWS SECRETS MANAGER ALTERNATIVE FOR GETTING SECRETS
 aws_secrets_config = dict(
+    test = { 
+            "secret_name" : "test",
+            "region_name" : "test",
+            "key_name" : "test"
+        },  
     dev = { 
             "secret_name" : "changeme",
             "region_name" : "changeme",
